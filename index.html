@@ -4,7 +4,6 @@
         <title>: Rock Paper Scissors by Eric Ryan</title>
     </head>
 
-
     <script>
 
     function getRandom() {
@@ -97,6 +96,7 @@
 
         for (i = 0; i <5; i++) {
             outcome = playRound();
+            
             if (outcome == "LOL YOU LOST!") {
                 computerScore++;
             } else if (outcome =="WOOHOO YOU WON!") {
@@ -105,27 +105,79 @@
                 //Don't increment round counter if it is a tie
                 i--;
             }
+
             console.log(outcome)
             console.log("Player: " + playerScore + "   Computer: " + computerScore)
-
         }
         if (playerScore > computerScore) {
             alert("You won with a score of " + playerScore + " to " + computerScore)
         } else if (playerScore < computerScore) {
             alert("You lost with a score of " + playerScore + " to " + computerScore)
         }
-
     }
-
-
-
-
         game()
-
 
     </script>
 
+    <style>
+        body {
+            margin: 0;
+        }
 
+        #Grey-Background {
+            background-color: purple;
+            height: 100vw;
+            width: 80vw;
+            margin: 0vw 10vw 0vw 10vw;
+        }
+
+        #RPS-Images-Container {
+            display: flex;
+            justify-content: space-evenly;
+            background-color: yellow;
+        }
+
+
+        .RPS-Images {
+            min-width: 0;
+            max-width: 100%;
+            min-height: 0;
+            max-height: 100%;
+            flex-shrink: 1;
+        }
+
+        button {
+            background-color: rgb(143, 143, 6);
+        }
+
+        #Scores {
+            display: flex;
+            color: yellow;
+        }
+
+
+    </style>
+
+
+    <body>
+        <div id="Grey-Background">
+            <div id="RPS-Images-Container">
+                <button type="button"> <img class="RPS-Images" src="Rock.jpg" alt="Picture of Rock"></button>
+                <button type="button"> <img class="RPS-Images" src="Paper.jpg" alt="Picture of Paper"></button>
+                <button type="button"> <img class="RPS-Images" src="Scissors.jpg" alt="Pitcure of Scissors"></button>
+            </div>
+
+            <div id="Scores">
+                Player Score: 
+                Computer Score:
+            </div>
+        </div>
+
+
+
+
+
+    </body>
 
 
 </html>
