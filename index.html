@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>: Rock Paper Scissors by Eric Ryan</title>
+    </head>
+
+
+    <script>
+
+    function getRandom() {
+        random = Math.random();
+        return random;
+    }
+
+
+    function computerPlay() {
+        let compChoice;
+        let random;
+
+        // Get a random number from 1 to 3 to decide computer's choice
+        random =  getRandom() * 3;
+
+        // For equal odds, we will never allow the random number to be 3.
+        // This way each outcome only has one whole number (0,1,2)
+        while (random == 3) {
+            random = getRandom();
+        }
+
+        console.log(random)
+
+        //Assign computers choice based on the random number
+        //Note choices are intentionally lower case for comparison later with playerSelection
+        if (random >= 0 && random < 1) {
+            compChoice = "rock";
+        } else if (random >= 1 && random < 2) {
+            compChoice = "paper";
+        } else {
+            compChoice = "scissors";
+        }
+        
+        return compChoice;
+    }
+
+    function playRound() {
+        //First determine computer's choice
+        let computerSelection = computerPlay();
+        console.log(computerSelection)
+
+        //Prompt user for their choice
+        let playerSelection = prompt("Please enter: Rock, Paper, Scissors")
+        console.log(playerSelection)
+
+        //Convert user entry to lowercase so we can use lowercase to recognize it
+        playerSelection = playerSelection.toLowerCase();
+
+        //Check that entry is valid and ask for another if not
+        while (playerSelection != "rock" && playerSelection != "paper" && playerSelection != "scissors") {
+            playerSelection = prompt("Invalid response.  Please enter: Rock, Paper, Scissors")
+        }
+
+        //Check who won and return the outcome
+        let outcome;
+
+        if (playerSelection == computerSelection) {
+            outcome = "It was a tie!";
+
+        } else if (playerSelection == "rock") {
+             if (computerSelection == "paper") {
+                 outcome = "LOL YOU LOST!";
+            } else {
+                outcome = "WOOHOO YOU WON!";
+            }
+
+        }else if (playerSelection == "paper") {
+            if (computerSelection == "scissors") {
+                 outcome = "LOL YOU LOST!";
+            } else {
+                outcome = "WOOHOO YOU WON!";
+            }
+
+        }else if (playerSelection == "scissors") {
+            if (computerSelection == "rock") {
+                 outcome = "LOL YOU LOST!";
+            } else {
+                outcome = "WOOHOO YOU WON!";
+            }
+        }
+
+        console.log(outcome)
+        return outcome;
+    }
+
+    function game() {
+        let i;
+        let playerScore = 0;
+        let computerScore = 0;
+
+        for (i = 0; i <5; i++) {
+            outcome = playRound();
+            if (outcome == "LOL YOU LOST!") {
+                computerScore++;
+            } else if (outcome =="WOOHOO YOU WON!") {
+                playerScore++;
+            } else if (outcome == "It was a tie!") { 
+                //Don't increment round counter if it is a tie
+                i--;
+            }
+            console.log(outcome)
+            console.log("Player: " + playerScore + "   Computer: " + computerScore)
+
+        }
+        if (playerScore > computerScore) {
+            alert("You won with a score of " + playerScore + " to " + computerScore)
+        } else if (playerScore < computerScore) {
+            alert("You lost with a score of " + playerScore + " to " + computerScore)
+        }
+
+    }
+
+
+
+
+        game()
+
+
+    </script>
+
+
+
+
+</html>
