@@ -4,127 +4,13 @@
         <title>: Rock Paper Scissors by Eric Ryan</title>
     </head>
 
-    <script>
-
-    function getRandom() {
-        random = Math.random();
-        return random;
-    }
-
-
-    function computerPlay() {
-        let compChoice;
-        let random;
-
-        // Get a random number from 1 to 3 to decide computer's choice
-        random =  getRandom() * 3;
-
-        // For equal odds, we will never allow the random number to be 3.
-        // This way each outcome only has one whole number (0,1,2)
-        while (random == 3) {
-            random = getRandom();
-        }
-
-        console.log(random)
-
-        //Assign computers choice based on the random number
-        //Note choices are intentionally lower case for comparison later with playerSelection
-        if (random >= 0 && random < 1) {
-            compChoice = "rock";
-        } else if (random >= 1 && random < 2) {
-            compChoice = "paper";
-        } else {
-            compChoice = "scissors";
-        }
-        
-        return compChoice;
-    }
-
-    function playRound() {
-        //First determine computer's choice
-        let computerSelection = computerPlay();
-        console.log(computerSelection)
-
-        //Prompt user for their choice
-        let playerSelection = prompt("Please enter: Rock, Paper, Scissors")
-        console.log(playerSelection)
-
-        //Convert user entry to lowercase so we can use lowercase to recognize it
-        playerSelection = playerSelection.toLowerCase();
-
-        //Check that entry is valid and ask for another if not
-        while (playerSelection != "rock" && playerSelection != "paper" && playerSelection != "scissors") {
-            playerSelection = prompt("Invalid response.  Please enter: Rock, Paper, Scissors")
-        }
-
-        //Check who won and return the outcome
-        let outcome;
-
-        if (playerSelection == computerSelection) {
-            outcome = "It was a tie!";
-
-        } else if (playerSelection == "rock") {
-             if (computerSelection == "paper") {
-                 outcome = "LOL YOU LOST!";
-            } else {
-                outcome = "WOOHOO YOU WON!";
-            }
-
-        }else if (playerSelection == "paper") {
-            if (computerSelection == "scissors") {
-                 outcome = "LOL YOU LOST!";
-            } else {
-                outcome = "WOOHOO YOU WON!";
-            }
-
-        }else if (playerSelection == "scissors") {
-            if (computerSelection == "rock") {
-                 outcome = "LOL YOU LOST!";
-            } else {
-                outcome = "WOOHOO YOU WON!";
-            }
-        }
-
-        console.log(outcome)
-        return outcome;
-    }
-
-    function game() {
-        let i;
-        let playerScore = 0;
-        let computerScore = 0;
-
-        for (i = 0; i <5; i++) {
-            outcome = playRound();
-            
-            if (outcome == "LOL YOU LOST!") {
-                computerScore++;
-            } else if (outcome =="WOOHOO YOU WON!") {
-                playerScore++;
-            } else if (outcome == "It was a tie!") { 
-                //Don't increment round counter if it is a tie
-                i--;
-            }
-
-            console.log(outcome)
-            console.log("Player: " + playerScore + "   Computer: " + computerScore)
-        }
-        if (playerScore > computerScore) {
-            alert("You won with a score of " + playerScore + " to " + computerScore)
-        } else if (playerScore < computerScore) {
-            alert("You lost with a score of " + playerScore + " to " + computerScore)
-        }
-    }
-        game()
-
-    </script>
-
+   
     <style>
         body {
             margin: 0;
         }
 
-        #Grey-Background {
+        #Purple-Background {
             background-color: purple;
             height: 100vw;
             width: 80vw;
@@ -139,20 +25,40 @@
 
 
         .RPS-Images {
-            min-width: 0;
             max-width: 100%;
-            min-height: 0;
-            max-height: 100%;
             flex-shrink: 1;
         }
 
-        button {
+        .playerbutton {
             background-color: rgb(143, 143, 6);
         }
 
-        #Scores {
+        #Scores-Container {
             display: flex;
             color: yellow;
+            justify-content: center;
+            font-size: x-large; 
+        }
+
+        .Score {
+            margin: 10px;
+        }
+
+        #text-container {
+            display: flex;
+            color: yellow;
+            justify-content: center;
+            font-size: xx-large;
+        }
+
+        #play-again {
+            background-color: yellow;
+            color: purple;
+        }
+
+        #play-again-container{
+            display: flex;
+            justify-content: center;
         }
 
 
@@ -160,17 +66,24 @@
 
 
     <body>
-        <div id="Grey-Background">
+        <div id="Purple-Background">
             <div id="RPS-Images-Container">
-                <button type="button"> <img class="RPS-Images" src="Rock.jpg" alt="Picture of Rock"></button>
-                <button type="button"> <img class="RPS-Images" src="Paper.jpg" alt="Picture of Paper"></button>
-                <button type="button"> <img class="RPS-Images" src="Scissors.jpg" alt="Pitcure of Scissors"></button>
+                <button type="button" class="playerbutton" id="rock"> <img class="RPS-Images" src="Rock.jpg" alt="Picture of Rock"></button>
+                <button type="button" class="playerbutton" id="paper"> <img class="RPS-Images" src="Paper.jpg" alt="Picture of Paper"></button>
+                <button type="button" class="playerbutton" id="scissors"> <img class="RPS-Images" src="Scissors.jpg" alt="Pitcure of Scissors"></button>
             </div>
 
-            <div id="Scores">
-                Player Score: 
-                Computer Score:
+            <div id="text-container">
+                Wanna play?  Use the buttons to shoot your shot!
             </div>
+
+            <div id="Scores-Container">
+                <div class="Score" id="playerScore">Player Score: 0</div>
+                <div class="Score" id="computerScore">Computer Score: 0</div>
+            </div>
+
+            <div id="play-again-container"></div>
+
         </div>
 
 
@@ -179,5 +92,177 @@
 
     </body>
 
+
+    <script>
+        //Record scores globally (outside of function) so they are maintained
+        //between rounds.
+        let playerScore = 0;
+        let computerScore = 0;
+
+
+        function getRandom() {
+            random = Math.random();
+            return random;
+        }
+    
+    
+        function computerPlay() {
+            let compChoice;
+            let random;
+    
+            // Get a random number from 1 to 3 to decide computer's choice
+            random =  getRandom() * 3;
+    
+            // For equal odds, we will never allow the random number to be 3.
+            // This way each outcome only has one whole number (0,1,2)
+            while (random == 3) {
+                random = getRandom();
+            }
+    
+            console.log(random)
+    
+            //Assign computers choice based on the random number
+            //Note choices are intentionally lower case for comparison later with playerSelection
+            if (random >= 0 && random < 1) {
+                compChoice = "rock";
+            } else if (random >= 1 && random < 2) {
+                compChoice = "paper";
+            } else {
+                compChoice = "scissors";
+            }
+            
+            return compChoice;
+        }
+    
+        function playRound(playerSelection) {
+            //First determine computer's choice
+            let computerSelection = computerPlay();
+            console.log(computerSelection)
+    
+            //Check who won and return the outcome
+            let outcome;
+
+            if (playerSelection == computerSelection) {
+                outcome = "It was a tie!";
+    
+            } else if (playerSelection == "rock") {
+                 if (computerSelection == "paper") {
+                     outcome = "LOL YOU LOST!";
+                } else {
+                    outcome = "WOOHOO YOU WON!";
+                }
+    
+            }else if (playerSelection == "paper") {
+                if (computerSelection == "scissors") {
+                     outcome = "LOL YOU LOST!";
+                } else {
+                    outcome = "WOOHOO YOU WON!";
+                }
+    
+            }else if (playerSelection == "scissors") {
+                if (computerSelection == "rock") {
+                     outcome = "LOL YOU LOST!";
+                } else {
+                    outcome = "WOOHOO YOU WON!";
+                }
+            }
+
+            //Update text line to show outcome
+            const textline = document.querySelector("#text-container");
+            textline.textContent = outcome + " Choose again!";
+
+
+            //Update scores based on outcome
+            updateScores(outcome);
+
+            console.log(outcome)
+            return outcome;
+        }
+
+        //Add fuctionality for buttons for player selection
+        const rockButton = document.querySelector('#rock');
+        rockButton.addEventListener('click', () => playRound("rock"));
+
+        const paperButton = document.querySelector('#paper');
+        paperButton.addEventListener('click', () => playRound("paper"));
+
+        const scissorsButton = document.querySelector('#scissors');
+        scissorsButton.addEventListener('click', () => playRound("scissors"));
+
+
+        //Define a function for updating the score values and display
+        function updateScores(outcome) {
+            if (outcome == "LOL YOU LOST!") {
+                    computerScore++;
+                } else if (outcome =="WOOHOO YOU WON!") {
+                    playerScore++;
+                }
+
+            //Change divs that contain scores to show new score
+            const pScore = document.querySelector("#playerScore");
+            const cScore = document.querySelector("#computerScore");
+
+            pScore.textContent = "Player Score: " + playerScore;
+            cScore.textContent = "Computer Score: " + computerScore;
+
+            if (computerScore == 5 || playerScore ==5) {
+                endGame()
+            }            
+
+        }
+
+        function endGame() {
+            if (computerScore == 5) {
+                const textline = document.querySelector("#text-container");
+                textline.textContent = "Computer beat you to 5! G3T R3KT!";
+            }
+
+            if (playerScore == 5) {
+                const textline = document.querySelector("#text-container");
+                textline.textContent = "You got to 5 first and PWNED the computer!";
+            }  
+
+            //Disable rock paper scissors buttons
+            const rock = document.querySelector("#rock");
+            rock.disabled = true;
+            const paper = document.querySelector("#paper");
+            paper.disabled = true;
+            const scissors = document.querySelector("#scissors");
+            scissors.disabled = true;
+
+            //Create a play again button
+            const playagain = document.createElement('button');
+            playagain.type = "button";
+            playagain.textContent = "Play Again?";
+            playagain.id = "play-again";
+            playagain.addEventListener("click", newGame);
+
+            //Add play again button to page
+            const playAgainContainer = document.querySelector("#play-again-container");
+            playAgainContainer.appendChild(playagain);
+        }
+
+        function newGame() {
+            playerScore = 0;
+            computerScore = 0;
+            updateScores(0);
+
+            const playagain = document.querySelector('#play-again');
+            const playAgainContainer = document.querySelector("#play-again-container");
+            playAgainContainer.removeChild(playagain);
+
+            const textline = document.querySelector("#text-container");
+            textline.textContent = "Wanna play?  Use the buttons to shoot your shot!";
+
+            const rock = document.querySelector("#rock");
+            rock.disabled = false;
+            const paper = document.querySelector("#paper");
+            paper.disabled = false;
+            const scissors = document.querySelector("#scissors");
+            scissors.disabled = false;
+        }
+
+        </script>
+    
 
 </html>
